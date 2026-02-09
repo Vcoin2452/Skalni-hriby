@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ověření znalostí | Skalní Hřiby</title>
+    <link rel="stylesheet" href="design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html" class="nav-item" data-tooltip="Domů"><i data-lucide="home"></i></a>
+        <a href="fyzika.html" class="nav-item" data-tooltip="Fyzika procesů"><i data-lucide="wind"></i></a>
+        <a href="litologie.html" class="nav-item" data-tooltip="Litologie"><i data-lucide="layers"></i></a>
+        <a href="lokality.html" class="nav-item" data-tooltip="Atlas lokalit"><i data-lucide="map"></i></a>
+        <a href="check.html" class="nav-item active" data-tooltip="Ověření znalostí"><i
+                data-lucide="check-circle"></i></a>
+    </nav>
+
+    <main class="container" style="padding-top: 100px;">
+        <span class="badge">Zpětná vazba</span>
+        <h2>Ověření <span style="color:white">Znalostí</span></h2>
+
+        <div class="glass-card" id="quizContainer">
+            <div id="q1">
+                <h3 style="margin-bottom: 20px;">1. Který proces je zodpovědný za mechanické obrušování "nohy" hřibu?
+                </h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(1, 'A')">A) Deflace</button>
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(1, 'B')">B) Koraze</button>
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(1, 'C')">C) Exfoliace</button>
+                </div>
+            </div>
+
+            <div id="q2" style="display: none;">
+                <h3 style="margin-bottom: 20px;">2. Co zpevňuje klobouk pokliček?</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(2, 'A')">A) Čedič</button>
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(2, 'B')">B) Limonitický tmel</button>
+                    <button class="btn-noble" style="text-align: left; background: var(--glass);"
+                        onclick="answer(2, 'C')">C) Beton</button>
+                </div>
+            </div>
+
+            <div id="result" style="display: none; text-align: center;">
+                <i data-lucide="award" size="64" style="color: var(--primary); margin-bottom: 20px;"></i>
+                <h3>Test dokončen!</h3>
+                <button class="btn-noble" style="margin-top: 20px;" onclick="location.reload()">Restartovat</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        function answer(q, choice) {
+            if (q === 1 && choice === 'B') {
+                document.getElementById('q1').style.display = 'none';
+                document.getElementById('q2').style.display = 'block';
+            } else if (q === 2 && choice === 'B') {
+                document.getElementById('q2').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+                lucide.createIcons();
+            } else {
+                alert("Špatně, zkus to znovu!");
+            }
+        }
+    </script>
+</body>
+
+</html>

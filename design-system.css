@@ -1,0 +1,237 @@
+:root {
+    --primary: #d4a017;
+    /* Noble gold/sand */
+    --accent: #e67e22;
+    --dark-bg: #0a0b0d;
+    --card-bg: rgba(20, 22, 26, 0.7);
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text: #e0e0e0;
+    --text-dim: #9ca3af;
+    --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* Navigation - Modern Sidebar Icons */
+.main-nav {
+    position: fixed;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 20px 10px;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
+}
+
+.nav-item {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 1.2rem;
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: var(--primary);
+    background: rgba(212, 160, 23, 0.1);
+}
+
+.nav-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 70px;
+    background: var(--primary);
+    color: black;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.nav-item:hover::after {
+    opacity: 1;
+    left: 60px;
+}
+
+/* Hero & Sections */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(212, 160, 23, 0.05) 0%, transparent 70%);
+}
+
+.badge {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    display: block;
+}
+
+h1 {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: 0.9;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.4rem;
+    color: var(--text-dim);
+    max-width: 800px;
+}
+
+/* Glass Card System */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 50px;
+    margin: 40px 0;
+    transition: var(--transition);
+}
+
+.glass-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+/* Grid layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Interactive elements */
+.btn-noble {
+    display: inline-block;
+    padding: 15px 40px;
+    background: var(--primary);
+    color: black;
+    text-decoration: none;
+    font-weight: 800;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: var(--transition);
+    border: 2px solid var(--primary);
+    cursor: pointer;
+}
+
+.btn-noble:hover {
+    background: transparent;
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.term-tag {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+footer {
+    padding: 100px 0 50px;
+    text-align: center;
+    border-top: 1px solid var(--glass-border);
+    margin-top: 100px;
+}
+
+.sim-container {
+    height: 400px;
+    background: #000;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+#leafletMap {
+    height: 500px;
+    border-radius: 25px;
+    border: 1px solid var(--glass-border);
+    margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .main-nav {
+        left: 50%;
+        bottom: 20px;
+        top: auto;
+        transform: translateX(-50%);
+        flex-direction: row;
+        width: fit-content;
+    }
+}

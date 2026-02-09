@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Litologie a Stavba | Skalní Hřiby</title>
+    <link rel="stylesheet" href="design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html" class="nav-item" data-tooltip="Domů"><i data-lucide="home"></i></a>
+        <a href="fyzika.html" class="nav-item" data-tooltip="Fyzika procesů"><i data-lucide="wind"></i></a>
+        <a href="litologie.html" class="nav-item active" data-tooltip="Litologie"><i data-lucide="layers"></i></a>
+        <a href="lokality.html" class="nav-item" data-tooltip="Atlas lokalit"><i data-lucide="map"></i></a>
+        <a href="check.html" class="nav-item" data-tooltip="Ověření znalostí"><i data-lucide="check-circle"></i></a>
+    </nav>
+
+    <main class="container" style="padding-top: 100px;">
+        <span class="badge">Vnitřní struktura</span>
+        <h2>Role <span style="color:white">Litologie</span></h2>
+
+        <div class="glass-card">
+            <h3>Nestejnoměrná odolnost</h3>
+            <p>Hřib nevznikne v homogenní (jednotné) skále. Vyžaduje tzv. <strong>litologické rozhraní</strong> – místo,
+                kde se stýkají dvě vrstvy s různými fyzikálně-chemickými vlastnostmi.</p>
+
+            <div class="grid" style="margin-top: 40px;">
+                <div
+                    style="background: rgba(255,255,255,0.02); padding: 30px; border-radius: 20px; border: 1px dashed var(--glass-border);">
+                    <h4 style="color:var(--primary)">Klobouk (Cap rock)</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li><strong>Hornina:</strong> Železitý pískovec, bazalt, tvrdá žula.</li>
+                        <li><strong>Pojivo:</strong> Limonitický nebo křemitý tmel.</li>
+                    </ul>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.02); padding: 30px; border-radius: 20px; border: 1px dashed var(--glass-border);">
+                    <h4 style="color:var(--primary)">Noha (Stem)</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li><strong>Hornina:</strong> Křemenný kvádrový pískovec.</li>
+                        <li><strong>Pojivo:</strong> Jílovitý nebo vápnitý tmel.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

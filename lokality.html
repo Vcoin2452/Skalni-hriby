@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Lokalit | Skalní Hřiby</title>
+    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html" class="nav-item" data-tooltip="Domů"><i data-lucide="home"></i></a>
+        <a href="fyzika.html" class="nav-item" data-tooltip="Fyzika procesů"><i data-lucide="wind"></i></a>
+        <a href="litologie.html" class="nav-item" data-tooltip="Litologie"><i data-lucide="layers"></i></a>
+        <a href="lokality.html" class="nav-item active" data-tooltip="Atlas lokalit"><i data-lucide="map"></i></a>
+        <a href="check.html" class="nav-item" data-tooltip="Ověření znalostí"><i data-lucide="check-circle"></i></a>
+    </nav>
+
+    <main class="container" style="padding-top: 100px;">
+        <span class="badge">Regionální přehled</span>
+        <h2>Atlas <span style="color:white">Lokalit</span></h2>
+
+        <div class="grid" style="margin-top: 50px;">
+            <div class="glass-card" style="padding: 0; overflow: hidden; cursor: pointer;"
+                onclick="focusMap(50.536, 16.273, 14)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Broumovsk%C3%A9_st%C4%9Bny%2C_Kamenn%C3%A9_h%C5%99iby.jpg"
+                    style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 25px;">
+                    <h3>Broumovské stěny</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">Slavenské hřiby jsou považovány za
+                        nejdokonalejší v rámci ČR.</p>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 0; overflow: hidden; cursor: pointer;"
+                onclick="focusMap(50.457, 14.583, 15)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Msenske_poklicky.JPG"
+                    style="width: 100%; height: 200px; object-fit: cover;">
+                <div style="padding: 25px;">
+                    <h3>Mšenské pokličky</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">Symbol Kokořínska chráněný limonitickým
+                        tmelem.</p>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 0; overflow: hidden; cursor: pointer;"
+                onclick="focusMap(27.35, 28.18, 10)">
+                <div
+                    style="height: 200px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                    <i data-lucide="globe" size="48"></i>
+                </div>
+                <div style="padding: 25px;">
+                    <h3>Bílá poušť (Egypt)</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">Extrémní příklad eolické koraze na vápenci.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="leafletMap"></div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        lucide.createIcons();
+
+        const map = L.map('leafletMap', {
+            scrollWheelZoom: false,
+            attributionControl: false
+        }).setView([40, 10], 2);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+
+        const markers = [
+            { pos: [50.457, 14.583], title: "Mšenské pokličky" },
+            { pos: [27.35, 28.18], title: "Bílá poušť" },
+            { pos: [50.536, 16.273], title: "Slavenské hřiby" }
+        ];
+
+        markers.forEach(m => {
+            L.marker(m.pos).addTo(map).bindPopup(`<b style="color:#000">${m.title}</b>`);
+        });
+
+        function focusMap(lat, lon, zoom) {
+            map.flyTo([lat, lon], zoom, { duration: 2 });
+            document.getElementById('leafletMap').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

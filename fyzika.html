@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fyzika procesů | Skalní Hřiby</title>
+    <link rel="stylesheet" href="design-system.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <nav class="main-nav">
+        <a href="index.html" class="nav-item" data-tooltip="Domů"><i data-lucide="home"></i></a>
+        <a href="fyzika.html" class="nav-item active" data-tooltip="Fyzika procesů"><i data-lucide="wind"></i></a>
+        <a href="litologie.html" class="nav-item" data-tooltip="Litologie"><i data-lucide="layers"></i></a>
+        <a href="lokality.html" class="nav-item" data-tooltip="Atlas lokalit"><i data-lucide="map"></i></a>
+        <a href="check.html" class="nav-item" data-tooltip="Ověření znalostí"><i data-lucide="check-circle"></i></a>
+    </nav>
+
+    <main class="container" style="padding-top: 100px;">
+        <span class="badge">Analýza sil</span>
+        <h2>Mechanika <span style="color:white">Eroze</span></h2>
+
+        <div class="glass-card">
+            <h3>Eolická činnost: Koraze</h3>
+            <p>Hlavním modelačním činitelem v aridních a peri-glaciálních oblastech je <strong>vítr</strong>. Proces
+                obrušování skály nárazy unášených zrn je definován jako <strong>koraze</strong> (větrná abraze).</p>
+
+            <div
+                style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                <div>
+                    <h4 style="color:var(--primary)">Gradient intenzity</h4>
+                    <p>Proč hřib vznikne? Protože vítr unáší nejtěžší a nejostřejší zrna (písek) v zóně tzv.
+                        <strong>saltace</strong> (skákání). Tato zóna sahá maximálně do <strong>1–1,5 metru</strong> nad
+                        povrch.</p>
+                    <ul style="margin-top: 20px; color: var(--text-dim); padding-left: 20px;">
+                        <li><strong>0-1m:</strong> Max. kinetická energie, intenzivní koraze (tvorba nohy).</li>
+                        <li><strong>Nad 2m:</strong> Pouze jemný prach (deflace), minimální abraze (zachování klobouku).
+                        </li>
+                    </ul>
+                </div>
+                <div class="sim-container" id="sim">
+                    <canvas id="sandCanvas"></canvas>
+                    <div
+                        style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px;">
+                        <span id="speedLabel" style="font-size: 0.8rem; color: var(--primary);">Vichřice: 0 m/s</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="btn-noble" onclick="toggleSim()">Simulovat korazi</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const canvas = document.getElementById('sandCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let running = false;
+        let speed = 0;
+
+        function resize() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+        window.onresize = resize;
+        resize();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * -100;
+                this.y = canvas.height - (Math.random() * 80 + 20);
+                this.vx = Math.random() * 5 + 5;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.size = Math.random() * 2 + 1;
+            }
+            update() { this.x += this.vx * (speed / 10); this.y += this.vy; if (this.x > canvas.width) this.reset(); }
+            draw() { ctx.fillStyle = "rgba(212, 160, 23, 0.4)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+        function animate() {
+            if (!running) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#222";
+            ctx.fillRect(canvas.width / 2 - 20, canvas.height - 150, 40, 150);
+            ctx.fillStyle = "#444";
+            ctx.beginPath();
+            ctx.ellipse(canvas.width / 2, canvas.height - 160, 60, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        function toggleSim() {
+            running = !running;
+            if (running) { speed = 20; document.getElementById('speedLabel').innerText = "Vichřice: 28 m/s"; animate(); }
+            else { speed = 0; }
+        }
+    </script>
+</body>
+
+</html>
