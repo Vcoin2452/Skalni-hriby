@@ -1,865 +1,326 @@
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skalní Hřiby | Expertí Geomorfologie</title>
-    <link rel="stylesheet" href="premium-design.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <title>Bobovité (Fabaceae) - Interaktivní Prezentace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-    <div class="progress-bar"></div>
-
-    <div class="liquid-container">
-        <nav class="liquid-nav">
-            <button class="ai-nav-toggle" onclick="openAIModal()" title="AI Geolog">
-                <i data-lucide="sparkles"></i>
+    <div class="presentation-container">
+        
+        <div class="controls">
+            <button id="voice-btn" class="control-btn" aria-label="Hlasový doprovod">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
             </button>
-            <div class="nav-liquid-bg">
-                <div class="nav-blob"></div>
-                <div class="nav-indicator"></div>
-            </div>
-            <a href="#hero" class="active" data-index="0">Domů</a>
-            <a href="#litologie" data-index="1">Litologie</a>
-            <a href="#procesy" data-index="2">Procesy</a>
-            <a href="#future" data-index="3">Osud</a>
-            <a href="#lokality" data-index="4">Atlas</a>
-            <button class="explore-toggle" onclick="toggleExploreMode()" title="Průzkumný mód">
-                <i data-lucide="microscope"></i>
+            <button id="fullscreen-btn" class="control-btn" aria-label="Celoobrazovkový režim">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
             </button>
-        </nav>
-    </div>
-
-
-    <div class="explore-tooltip" id="exploreTooltip">Klikni pro vysvětlení AI</div>
-
-    <section id="hero" class="hero">
-        <div class="hero-bg" id="heroBg"></div>
-        <div class="hero-content">
-            <span class="reveal"
-                style="text-transform: uppercase; letter-spacing: 4px; font-weight: 700; color: var(--primary);"></span>
-            <h1 id="heroTitle" style="opacity: 0; transform: translateY(50px);">SKALNÍ<br>HŘIBY</h1>
-            <p id="heroLead" style="opacity: 0; transform: translateY(30px);">Komplexní pohled do světa selektivního
-                zvětrávání a geomorfologických procesů pískovcových měst.</p>
-            <div class="reveal" style="margin-top: 40px;">
-                <a href="#genesis" class="btn-premium" id="startJourneyBtn">ZAČÍT</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="genesis" class="reveal">
-        <h2 style="text-align: center; margin-bottom: 60px;">Jak hřib vzniká?</h2>
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 30px;">
-            <div class="glass-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"><i data-lucide="waves"></i>
-                </div>
-                <h4 data-inspectable="true" data-topic="Sedimentace pískovce u skalních hřibů">1. Usazování</h4>
-                <div class="more-info-static" style="padding-top: 15px; font-size: 0.85rem; color: var(--text-dim);"
-                    data-inspectable="true" data-topic="Mořská sedimentace v druhohorách">
-                    Před miliony lety se na dně moře vrstvil písek.</div>
-                <button class="btn-anim" onclick="openAnimation('sediment')">Sledovat proces</button>
-            </div>
-            <div class="glass-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"><i data-lucide="lock"></i>
-                </div>
-                <h4 data-inspectable="true" data-topic="Diageneze a litifikace pískovce">2. Ztvrdnutí</h4>
-                <div class="more-info-static" style="padding-top: 15px; font-size: 0.85rem; color: var(--text-dim);"
-                    data-inspectable="true" data-topic="Tmel v pískovci a jeho vliv na tvrdost">
-                    Tlakem a chemií se písek slepil v kámen.</div>
-                <button class="btn-anim" onclick="openAnimation('lithos')">Sledovat proces</button>
-            </div>
-            <div class="glass-card" style="text-align: center;">
-                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"><i
-                        data-lucide="mountain"></i></div>
-                <h4 data-inspectable="true" data-topic="Erozní modelování geomorfologických útvarů">3. Obroušení</h4>
-                <div class="more-info-static" style="padding-top: 15px; font-size: 0.85rem; color: var(--text-dim);"
-                    data-inspectable="true" data-topic="Eolická eroze a koraze">
-                    Vítr a mráz začaly vybrousit tvary.</div>
-                <p style="font-size: 0.8rem; color: var(--primary); margin-top: 15px;">Vyzkoušejte v simulátoru níže ↓
-                </p>
-            </div>
         </div>
 
-        <div class="glass-card" style="margin-top: 40px;" id="simulace">
-            <h3 style="text-align: center; margin-bottom: 30px;">Simulátor Selektivní Eroze</h3>
-            <div style="display: flex; gap: 40px; align-items: center;">
-                <div style="flex: 1;">
-                    <p style="font-size: 0.95rem;">Zde můžete v reálném čase sledovat, jak pískem nasycený vítr (koraze)
-                        modeluje spodní část skály.</p>
-                    <div style="margin-top: 30px; display: flex; gap: 15px;">
-                        <button id="startBtn" class="btn-premium"
-                            style="margin-top: 0; cursor: pointer; background: var(--primary); color: #000;">Spustit
-                            Erozi</button>
-                        <button id="resetBtn" class="btn-premium"
-                            style="margin-top: 0; cursor: pointer;">Resetovat</button>
-                    </div>
+        <div class="navigation-dots" id="dots">
+            <!-- Vygenerováno pomocí JS -->
+        </div>
+
+        <!-- Šipky pro navigaci pro případ klikání -->
+        <button class="nav-arrow left-arrow" id="prev-btn" aria-label="Předchozí" disabled>
+            <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="nav-arrow right-arrow" id="next-btn" aria-label="Další">
+            <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div class="slides-wrapper" id="slides-wrapper">
+            
+            <!-- Slide 1: Titulní Strana -->
+            <section class="slide active">
+                <div class="slide-background" style="background-image: url('assets/fabaceae_intro_1775802088900.png')"></div>
+                <div class="slide-content intro-slide" style="justify-content: center; align-items: center;">
+                    <h1 class="main-title" style="font-size: 6rem; margin-bottom: 20px;">Bobovité <span class="latin-name" style="font-size: 0.35em;">(Fabaceae)</span></h1>
+                    <h3 style="text-align: center; color: var(--gold); font-family: 'Inter', sans-serif; font-weight: 400; font-size: 2rem;">Vypracovali: Jan Votoček a Kryštof Pavelka</h3>
+                    <p class="instruction-text" style="position: absolute; bottom: 50px; margin: 0;">Pro procházení prezentace použijte <strong>šipky na klávesnici</strong>, postranní tlačítka, nebo kolečko myši.</p>
                 </div>
-                <div id="canvas-container"
-                    style="flex: 1.5; height: 350px; background: rgba(0,0,0,0.3); border-radius: 20px; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: bottom;">
-                    <div id="rock-model"
-                        style="width: 120px; height: 180px; background: #554433; align-self: flex-end; border-radius: 10px 10px 0 0; transition: width 5s linear, height 5s linear; position: relative; margin-bottom: 20px;">
-                        <div id="cap-rock"
-                            style="width: 130px; height: 50px; background: #3d3126; border-radius: 50% 50% 10px 10px; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border-bottom: 3px solid #2a221a;">
+            </section>
+
+            <!-- Slide 2: Znaky čeledi -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/fabaceae_intro_1775802088900.png')"></div>
+                <div class="slide-content intro-slide">
+                    <h2 class="plant-title" style="text-align: center; margin-bottom: 30px;">Znaky čeledi</h2>
+                    <div class="glass-panel main-panel" style="max-height: 85vh; overflow-y: auto;">
+                        <p class="intro-description">Vítejte v interaktivním muzeu jedné z nejvýznamnějších čeledí rostlin.</p>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <h3>Motýlovitý květ</h3>
+                                <p>Květ vzhledem připomíná motýla. Skládá se z <strong>pavézy</strong> (horní velký lístek lákající hmyz), dvou postranních <strong>křídel</strong> a ze srostlého <strong>člunku</strong>. Ve člunku se schovávají tyčinky a pestík chráněné před nepřízní vlivů.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>Plod Lusk</h3>
+                                <p>Charakteristický suchý plod, který po dozrání obvykle puká nadvakrát. Uvnitř se nacházejí cenná semena (luštěniny), která v sobě nesou vysoký obsah pro člověka velmi důležitých bílkovin.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>Přírodní hnojivo v kořenech</h3>
+                                <p>Rostliny tvoří dokonalou symbiózu s hlízkovitými bakteriemi (rod <em>Rhizobium</em>) žijícími na kořenech. Ty umí jako jedny z mála vázat volný dusík ze vzduchu, čímž půdu přirozeně hnojí a obohacují.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>Složené listy a úponky</h3>
+                                <p>Listy bývají obvykle <strong>složené</strong> (zpeřené či trojčetné). Pro popínavé druhy teto čeledi (například hrách) je typické, že se koncové lístky přeměňují v <strong>úponky</strong>, kterými se rostlina inteligentně zachytává opory.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section id="litologie" class="expert-grid" style="direction: rtl;">
-        <div style="direction: ltr;" class="reveal">
-            <h2 style="margin-bottom: 30px; letter-spacing: 1px;">OD ROVINY K VĚŽÍM</h2>
-            <div class="glass-card" style="padding: 40px; border-right: 4px solid var(--primary);">
-                <p style="font-size: 1.1rem; line-height: 1.7; color: var(--text-main);">
-                    Sedimenty (písek) se původně usazovaly ve vodorovných vrstvách na mořském dně. Jak se z nich ale
-                    staly samostatné sloupy?
-                </p>
-                <div style="margin-top: 25px; display: grid; gap: 20px;">
-                    <div style="display: flex; gap: 20px;">
-                        <span style="font-size: 2rem; color: var(--primary); font-weight: 800; opacity: 0.5;">01</span>
-                        <p style="color: var(--text-dim);"><strong>Tektonika a praskání:</strong> Při výzdvihu zemské
-                            kůry vznikly v masivu svislé trhliny (tzv. pukliny). Pískovec se tak rozdělil na obří
-                            kvádry.</p>
+
+
+            <!-- Slide 4: Hrách setý -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/peas_plant_1775802103874.png')"></div>
+                <div class="slide-content split-layout">
+                    <div class="info-side">
+                        <h2 class="plant-title">Hrách setý <span class="latin-name">(Pisum sativum)</span></h2>
+                        <div class="badges">
+                            <span class="badge">Bylina</span>
+                            <span class="badge">Jednoletá</span>
+                        </div>
+                        
+                        <div class="glass-panel details-panel">
+                            <ul class="data-list">
+                                <li><strong>Výška:</strong> 15–200 cm (podle odrůdy, obvykle popínavá lodyha s úponky)</li>
+                                <li><strong>Výskyt (prostředí):</strong> Mírné podnebí. Vyžaduje slunné stanoviště a oporu, propustnou půdu. Nesnáší těžké zamokřené půdy.</li>
+                                <li><strong>Květy:</strong> Motýlovité, většinou čistě bílé (u krmných odrůd fialové). Kvete na jaře a v létě (květen – červenec).</li>
+                                <li><strong>Plod:</strong> Lusk obsahující kulatá zelená nebo žlutá semena.</li>
+                            </ul>
+                            
+                            <!-- Interaktivní zóna pro Zápis a Zajímavost -->
+                            <div class="interactive-zones">
+                                <div class="flip-card notebook-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-green">Zápis do sešitu: Využití</div>
+                                        <div class="flip-card-back">
+                                            <strong>Druh zeleniny a luštěniny</strong><br>
+                                            Konzumují se nezralá i zralá semena. Mají <strong>nízký glykemický index</strong>, obsahují bílkoviny, vlákninu, vitamíny (B, C) a minerály (draslík). Konzumujeme pro podporu růstu svalů a dobré trávení.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flip-card fun-fact-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-gold">Zajímavost</div>
+                                        <div class="flip-card-back">
+                                            Víte, že na vlastnotečně pěstovaném hrachu v Brně objevil <strong>Johann Gregor Mendel</strong> 
+                                            v 19. století základní zákony genetiky a dědičnosti? Sledoval, jak se barva a tvar semen přenáší na potomstvo.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display: flex; gap: 20px;">
-                        <span style="font-size: 2rem; color: var(--primary); font-weight: 800; opacity: 0.5;">02</span>
-                        <p style="color: var(--text-dim);"><strong>Rozšiřování spár:</strong> Do těchto prasklin vnikla
-                            voda, mráz a kořeny rostlin. Ty mechanicky rozšiřovaly mezery mezi bloky.</p>
-                    </div>
-                    <div style="display: flex; gap: 20px;">
-                        <span style="font-size: 2rem; color: var(--primary); font-weight: 800; opacity: 0.5;">03</span>
-                        <p style="color: var(--text-dim);"><strong>Izolace sloupu:</strong> Postupem času se okolní masa
-                            horniny rozpadla, čímž zůstaly stát osamocené skalní věže a budoucí "hřiby".</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="reveal">
-            <img src="assets/hero.png" id="imgLitologie" alt="Vertikální pukliny" class="parallax-img"
-                style="border-radius: 30px; border: 1px solid var(--glass-border); max-height: 500px; width: 100%; object-fit: cover;">
-        </div>
-    </section>
-
-    <section id="procesy" class="expert-grid">
-        <div class="reveal">
-            <h2 style="margin-bottom: 30px; letter-spacing: 2px;" data-inspectable="true"
-                data-topic="Mechanismus selektivní eroze">PRINCIP SELEKTIVNÍ EROZE</h2>
-            <div class="glass-card" style="padding: 40px; border-left: 4px solid var(--primary);">
-                <p style="font-size: 1.2rem; margin-bottom: 25px; color: #fff; font-weight: 600;"
-                    data-inspectable="true" data-topic="Diferenciální zvětrávání hornin">
-                    Klíčem ke vzniku hřibu je různorodá odolnost horninových vrstev.
-                </p>
-
-                <div style="margin-bottom: 25px;">
-                    <h4 style="color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"
-                        data-inspectable="true" data-topic="Křemitý a železitý tmel u pokliček">
-                        <i data-lucide="chevron-up"></i> Horní část (Klobouk)
-                    </h4>
-                    <p style="color: var(--text-dim); line-height: 1.6;">
-                        Je obvykle tvořena pískovcem s <strong>křemitým nebo železitým tmelem</strong>, který je velmi
-                        tvrdý a odolný vůči zvětrávání.
-                    </p>
-                </div>
-
-                <div>
-                    <h4
-                        style="color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                        <i data-lucide="chevron-down"></i> Spodní část (Noha)
-                    </h4>
-                    <p style="color: var(--text-dim); line-height: 1.6;">
-                        Je z měkčího, <strong>hlinitého pískovce</strong>, který podléhá erozi mnohem rychleji působením
-                        vlhkosti a pískem nasyceného větru u země.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="reveal" style="display: flex; align-items: center; justify-content: center;">
-            <img src="assets/forest.png" id="imgProcesy" alt="Geologický detail" class="parallax-img"
-                style="border-radius: 30px; border: 1px solid var(--glass-border); max-height: 500px; width: 100%; object-fit: cover;">
-        </div>
-    </section>
-
-
-
-    <section id="future" class="reveal" style="margin-top: 100px; margin-bottom: 100px;">
-        <div class="glass-card"
-            style="padding: 60px; text-align: center; background: linear-gradient(135deg, rgba(20,20,20,0.4), rgba(5,5,5,0.6)); border: 1px solid rgba(255,78,95,0.2);">
-            <h2 style="margin-bottom: 30px; letter-spacing: 2px; color: var(--accent);">OSUD SKALNÍCH HŘIBŮ</h2>
-            <div style="max-width: 800px; margin: 0 auto;">
-                <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-main); margin-bottom: 30px;">
-                    Skalní hřiby jsou z geologického hlediska jen <strong>pomíjivým okamžikem</strong>. Proces, který je
-                    vytvořil, je nakonec i zahubí.
-                </p>
-                <div class="grid"
-                    style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: left;">
-                    <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px;">
-                        <h4 style="color: var(--primary); margin-bottom: 15px;">Kdy se zřítí?</h4>
-                        <p style="color: var(--text-dim); font-size: 0.95rem;">Nedá se to určit přesně na rok. Některé
-                            útvary stojí staletí, jiné mohou zaniknout během jedné extrémní bouře nebo mrazivé zimy, kdy
-                            led roztrhne oslabenou nohu.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px;">
-                        <h4 style="color: var(--primary); margin-bottom: 15px;">Bod zlomu</h4>
-                        <p style="color: var(--text-dim); font-size: 0.95rem;">Jakmile noha hřibu dosáhne kritického
-                            zúžení, přestane zvládat váhu masivního klobouku. Gravitace pak vykoná své a klobouk se
-                            vlastní vahou odlomí a zřítí.</p>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px;">
-                        <h4 style="color: var(--primary); margin-bottom: 15px;">Status: Ohrožené</h4>
-                        <p style="color: var(--text-dim); font-size: 0.95rem;">Mnohé slavné hřiby jsou dnes přísně
-                            chráněny a monitorovány. Jsou to unikátní sochy přírody, které už nikdo znovu nepostaví –
-                            jakmile jednou padnou, proces začíná od nuly.</p>
+                    <div class="image-side">
+                        <img src="assets/peas_plant_1775802103874.png" alt="Hrách setý" class="featured-image">
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section id="lokality" style="text-align: center;">
-        <h2 class="reveal">Světový a Lokální Atlas</h2>
-        <div class="expert-grid" style="margin-top: 60px; text-align: left;">
-            <div class="glass-card reveal">
-                <h4>Česká Republika</h4>
-                <p>Broumovské stěny (hřiby u Slavného), Kokořínsko, České Švýcarsko.</p>
-            </div>
-            <div class="glass-card reveal">
-                <h4>Světové Lokality</h4>
-                <p>Bardenas Reales (Španělsko), Goblin Valley (USA), Wadi Rum (Jordánsko).</p>
-            </div>
-        </div>
-        <div id="map"
-            style="height: 600px; margin-top: 60px; border-radius: 40px; border: 1px solid var(--glass-border); z-index: 1;"
-            class="reveal"></div>
-    </section>
+            <!-- Slide 3: Fazol obecný -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/beans_plant_1775802120910.png')"></div>
+                <div class="slide-content split-layout reversed">
+                    <div class="info-side">
+                        <h2 class="plant-title">Fazol obecný <span class="latin-name">(Phaseolus vulgaris)</span></h2>
+                        <div class="badges">
+                            <span class="badge">Bylina</span>
+                            <span class="badge">Jednoletá</span>
+                        </div>
+                        
+                        <div class="glass-panel details-panel">
+                            <ul class="data-list">
+                                <li><strong>Výška:</strong> Keříčkové formy (30–60 cm), pnoucí odrůdy dorůstají až 3 metrů.</li>
+                                <li><strong>Výskyt (prostředí):</strong> Původem z tropické Ameriky. Je teplomilná rostlina citlivá na mráz. Vyžaduje chráněná slunná stanoviště a na živiny bohatou (humózní) půdu.</li>
+                                <li><strong>Květy:</strong> Motýlovité květy vyrůstající v řídkých hroznech. Barva kolísá od bílé přes nažloutlou, růžovou k fialové. Kvete v létě (červen – srpen).</li>
+                                <li><strong>Plod:</strong> Dlouhý lusk (až desítky cm), pěstuje se v masitých nepukavých i klasických varintách.</li>
+                            </ul>
+                            
+                            <div class="interactive-zones">
+                                <div class="flip-card notebook-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-green">Zápis do sešitu: Využití</div>
+                                        <div class="flip-card-back">
+                                            <strong>Zelenina (lusky) a luštěnina (semena)</strong><br>
+                                            <span style="color:var(--danger)">Cokoliv v syrovém stavu je mírně jedovaté!</span> Musí se vařit (obsahuje toxin fasin). Dodává fosfor, železo, vápník a vitamíny řady B.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flip-card fun-fact-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-gold">Zajímavost</div>
+                                        <div class="flip-card-back">
+                                            Indiáni v Americe pěstovali fazole v kombinaci zvané "Tři sestry": <strong>kukuřice, fazole a dýně</strong>. Kukuřice sloužila jako opora, fazole dodávala do půdy dusík a dýně pokryla zem, aby se odpařovalo méně vody.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side">
+                        <img src="assets/beans_plant_1775802120910.png" alt="Fazol obecný" class="featured-image">
+                    </div>
+                </div>
+            </section>
 
-    </section>
+            <!-- Slide 4: Čočka jedlá -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/lentils_plant_1775802132482.png')"></div>
+                <div class="slide-content split-layout">
+                    <div class="info-side">
+                        <h2 class="plant-title">Čočka jedlá <span class="latin-name">(Lens culinaris)</span></h2>
+                        <div class="badges">
+                            <span class="badge">Bylina</span>
+                            <span class="badge">Jednoletá</span>
+                        </div>
+                        
+                        <div class="glass-panel details-panel">
+                            <ul class="data-list">
+                                <li><strong>Výška:</strong> Velmi nízká, jemná rostlinka (15–50 cm). Bohatě větvená se zpeřenými lístky zakončenými úponkem.</li>
+                                <li><strong>Výskyt (prostředí):</strong> Původ z Blízkého východu. Miluje teplo, je velmi odolná proti suchu ("suchomilná"). Nedaří se jí ve vlhku a těžkých půdách, lépe kamenité a lehké půdy.</li>
+                                <li><strong>Květy:</strong> Velmi drobné, bledě modré až fialové, kvetou od června do srpna (léto).</li>
+                                <li><strong>Plod:</strong> Drobný, široce kosočtverečný plochý lusk (obsahuje obvykle 1-2 plochá semena).</li>
+                            </ul>
+                            
+                            <div class="interactive-zones">
+                                <div class="flip-card notebook-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-green">Zápis do sešitu: Využití</div>
+                                        <div class="flip-card-back">
+                                            <strong>Důležitá luštěnina</strong><br>
+                                            Tvoří ji z cca 25 % čisté bílkoviny! Je extrémně bohatá na <strong>železo a kyselinu listovou</strong>. Snadno stabilizuje hladinu cukru v krvi a je snadněji stravitelná než fazole.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flip-card fun-fact-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-gold">Zajímavost</div>
+                                        <div class="flip-card-back">
+                                            Čočka je jednou z vůbec <strong>prvních pěstovaných plodin na světě</strong>. Archeologové nalezli čočku v jeskyni poblíž starověké hrobky, jejíž nalezené vzorky jsou staré až 8000 let!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side">
+                        <img src="assets/lentils_plant_1775802132482.png" alt="Čočka jedlá" class="featured-image">
+                    </div>
+                </div>
+            </section>
 
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: absolute; width: 0; height: 0;">
-        <defs>
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"
-                    result="goo" />
-            </filter>
-        </defs>
-    </svg>
+            <!-- Slide 5: Sója luštinatá -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/soy_plant_1775802147538.png')"></div>
+                <div class="slide-content split-layout reversed">
+                    <div class="info-side">
+                        <h2 class="plant-title">Sója luštinatá <span class="latin-name">(Glycine max)</span></h2>
+                        <div class="badges">
+                            <span class="badge">Bylina</span>
+                            <span class="badge">Jednoletá</span>
+                        </div>
+                        
+                        <div class="glass-panel details-panel">
+                            <ul class="data-list">
+                                <li><strong>Výška:</strong> 20–200 cm (Zemědělsky pěstované odrůdy mají obvykle kolem 1 metru). Celá rostlina je nápadně drsně chlupatá.</li>
+                                <li><strong>Výskyt (prostředí):</strong> Teplomilná rostlina původem z východní Asie. Potřebuje dostatek letních srážek, hlubší prohřívanou půdu. Náročnější na zálivku z počátku růstu.</li>
+                                <li><strong>Květy:</strong> Droboučké, nenápadné bílé, růžové či fialové květy utopené v paždí listů. Kvetou v létě.</li>
+                                <li><strong>Plod:</strong> Chlupatý převislý lusk v trsech (skrývá 1–4 kuličky semen nejčastěji žluté barvy, ale varianty mohou být i černé nebo zelené).</li>
+                            </ul>
+                            
+                            <div class="interactive-zones">
+                                <div class="flip-card notebook-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-green">Zápis do sešitu: Využití</div>
+                                        <div class="flip-card-back">
+                                            <strong>Dvojkomodita: Olejnina i Luštěnina</strong><br>
+                                            Má zdaleka nejvyšší podíl bílkovin (cca 40 %) s kompletním aminokyselinovým profilem, plus zhruba 20 % olejů. Vyrábí se z ní Tofu, tempeh, mléko i sójový olej.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flip-card fun-fact-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front card-gold">Zajímavost</div>
+                                        <div class="flip-card-back">
+                                            Je to <strong>celosvětově nejrozšířenější pěstovaná luštěnina</strong> a velmi kontroverzní plodina. Více jak 80 % světové produkce se buď použije jako levné krmivo pro zvířata, nebo zpracuje průmyslově.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side">
+                        <img src="assets/soy_plant_1775802147538.png" alt="Sója luštinatá" class="featured-image">
+                    </div>
+                </div>
+            </section>
 
-    <div class="modal-overlay" id="animationModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Animace procesu</h2>
-            <p id="modalDesc" style="color: var(--text-dim); margin-top: 10px;"></p>
-            <div id="animation-view">
-                <canvas id="genCanvas"></canvas>
-            </div>
+            <!-- Slide 6: Mapa výskytu (Závěr) -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/world_map.png')"></div>
+                <div class="slide-content intro-slide">
+                    <h2 class="plant-title" style="text-align: center; margin-bottom: 20px;">Původ rostlin ve světě</h2>
+                    <div class="glass-panel main-panel map-panel" style="position: relative; padding: 20px;">
+                        <img src="assets/world_map.png" alt="Mapa původu" style="width: 100%; border-radius: 12px; display: block;">
+                        
+                        <!-- Markers -->
+                        <div class="map-marker" style="top: 55%; left: 25%;" title="Fazol obecný">
+                            <span class="marker-pulse"></span>
+                            <div class="marker-label">Fazol<br><small style="color: var(--accent);">Stř./Jižní Amerika</small></div>
+                        </div>
+                        <div class="map-marker" style="top: 38%; left: 52%;" title="Hrách setý">
+                            <span class="marker-pulse"></span>
+                            <div class="marker-label">Hrách<br><small style="color: var(--accent);">Evropa / Středomoří</small></div>
+                        </div>
+                        <div class="map-marker" style="top: 45%; left: 60%;" title="Čočka jedlá">
+                            <span class="marker-pulse"></span>
+                            <div class="marker-label">Čočka<br><small style="color: var(--accent);">Blízký východ</small></div>
+                        </div>
+                        <div class="map-marker" style="top: 42%; left: 78%;" title="Sója luštinatá">
+                            <span class="marker-pulse"></span>
+                            <div class="marker-label">Sója<br><small style="color: var(--accent);">Východní Asie</small></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Takeaway (Závěr) -->
+            <section class="slide">
+                <div class="slide-background blur-bg" style="background-image: url('assets/fabaceae_intro_1775802088900.png')"></div>
+                <div class="slide-content intro-slide" style="justify-content: center; text-align: center;">
+                    <h2 class="plant-title" style="font-size: 4rem; color: var(--gold); margin-bottom: 30px;">Co si odnést?</h2>
+                    <div class="glass-panel main-panel" style="max-width: 900px; margin: 0 auto; padding: 40px;">
+                        <ul style="list-style: none; text-align: left; font-size: 1.3rem; padding: 0;">
+                            <li style="margin-bottom: 30px; display: flex; gap: 15px;">
+                                <span style="font-size: 2rem;">🌱</span> 
+                                <div><strong>Zázrak v hlíně: </strong>Nepotřebují tuny drahých hnojiv, protože si pomocí hlízkových bakterií stahují dusík z atmosféry. Půdu nevysávají, naopak jí pomáhají.</div>
+                            </li>
+                            <li style="margin-bottom: 30px; display: flex; gap: 15px;">
+                                <span style="font-size: 2rem;">🥩</span> 
+                                <div><strong>Maso rostlinné říše: </strong>Luštěniny tvoří jeden z nejsilnějších přírodních zdrojů bílkovin, proto představují nepostradatelný základ výživy i perfektní alternativu pro zdravý životní styl.</div>
+                            </li>
+                            <li style="display: flex; gap: 15px;">
+                                <span style="font-size: 2rem;">🌍</span> 
+                                <div><strong>Budoucnost Země: </strong>Díky své nenáročnosti dokážou zasytit celou planetu. Jejich pěstování je extrémně udržitelné a dává tak klíč naší zdravé budoucnosti.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </div>
-
-    <!-- Location Detail Modal -->
-    <div class="modal-overlay" id="locationModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeLocModal()">&times;</span>
-            <div class="loc-detail-grid">
-                <div class="loc-anim-item" style="opacity: 0; transform: translateX(-30px);">
-                    <img id="locImg" src=""
-                        style="width: 100%; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
-                </div>
-                <div class="loc-info-content">
-                    <h2 id="locTitle" class="loc-anim-item"
-                        style="margin-bottom: 20px; opacity: 0; transform: translateY(20px);"></h2>
-                    <p id="locDesc" class="loc-anim-item"
-                        style="color: var(--text-dim); margin-bottom: 30px; line-height: 1.8; opacity: 0; transform: translateY(20px);">
-                    </p>
-                    <div class="loc-anim-item"
-                        style="display: flex; gap: 15px; flex-wrap: wrap; opacity: 0; transform: translateY(20px);">
-                        <span id="locAge" class="glass-tag"></span>
-                        <span id="locType" class="glass-tag"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-overlay" id="aiModal">
-        <div class="ai-card">
-            <div class="ai-header">
-                <h3><i data-lucide="sparkles" style="width: 18px; vertical-align: middle; margin-right: 8px;"></i>AI
-                    Geolog</h3>
-                <span class="modal-close" onclick="closeAIModal()"
-                    style="position: static; font-size: 1.5rem;">&times;</span>
-            </div>
-            <div id="aiChatArea">
-                <div class="ai-bubble bot">Ahoj! Jsem tvůj digitální geologický průvodce. Zeptej se mě na cokoliv o
-                    vzniku skalních hřibů, erozi nebo pískovcích!</div>
-            </div>
-            <div class="ai-input-area">
-                <input type="text" id="aiInput" placeholder="Napiš dotaz..."
-                    onkeypress="if(event.key==='Enter') sendAIShowMessage()">
-                <button class="ai-send-btn" onclick="sendAIShowMessage()">
-                    <i data-lucide="send" style="width: 18px; height: 18px;"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- QR Code Modal -->
-    <div class="modal-overlay" id="qrModal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="modal-close" onclick="closeQrModal()">&times;</span>
-            <h2 style="margin-bottom: 20px;">Mobilní průvodce</h2>
-            <p style="color: var(--text-dim); margin-bottom: 25px;">Naskenujte pro stažení materiálů do mobilu.</p>
-            <div style="background: white; padding: 20px; border-radius: 20px; display: inline-block;">
-                <img id="qrImg" src="assets/qrq.png"
-                    style="width: 250px; height: 250px; display: block; border-radius: 10px; filter: contrast(1.1);">
-            </div>
-            <p style="margin-top: 20px; font-size: 0.8rem; color: var(--primary);">QR Kód - Geologická Expertíza</p>
-        </div>
-    </div>
-
-    <footer style="padding: 120px 10%; text-align: center; color: var(--text-dim); position: relative;">
-        <div class="footer-tools-left">
-            <div class="zoom-container footer-tool-btn">
-                <i data-lucide="maximize-2" style="width: 14px; height: 14px;"></i>
-                <input type="range" min="1" max="2" step="0.1" value="1" class="zoom-slider" id="zoomSlider">
-                <span class="zoom-label" id="zoomLabel">100%</span>
-            </div>
-        </div>
-
-        <p>&copy; 2026 Vytvořeno pro skupinu: Votoček, Pavelka, Fišer a Kopecký na Zeměpis</p>
-
-        <div class="footer-tools-right">
-            <button class="footer-tool-btn" onclick="openQrModal()">
-                <i data-lucide="qr-code" style="width: 14px; height: 14px;"></i>QR Guide
-            </button>
-        </div>
-    </footer>
-
-    <script>
-        const heroImg = 'assets/hero.png';
-        const forestImg = 'assets/forest.png';
-        document.getElementById('heroBg').style.backgroundImage = `url('${heroImg}')`;
-        document.getElementById('imgProcesy').src = forestImg;
-        document.getElementById('imgLitologie').src = heroImg;
-
-        lucide.createIcons();
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.to("#heroTitle", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out", delay: 0.5 });
-        gsap.to("#heroLead", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out", delay: 0.8 });
-        gsap.to(".hero-bg", { scale: 1, duration: 2, ease: "power2.out" });
-
-        const navLinks = document.querySelectorAll('.liquid-nav a');
-        const blob = document.querySelector('.nav-blob');
-        const indicator = document.querySelector('.nav-indicator');
-
-        function moveIndicator(el) {
-            if (!el) return;
-            const rect = el.getBoundingClientRect();
-            const navRect = el.parentElement.getBoundingClientRect();
-            const left = rect.left - navRect.left;
-            gsap.to(blob, { left: left, width: rect.width, duration: 0.8, ease: "elastic.out(1, 0.7)" });
-            gsap.to(indicator, { left: left, width: rect.width, duration: 0.6, ease: "power4.out" });
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetEl = document.querySelector(targetId);
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                moveIndicator(link);
-                window.scrollTo({ top: targetEl.offsetTop - 100, behavior: 'smooth' });
-            });
-        });
-
-        document.getElementById('startJourneyBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: document.querySelector('#genesis').offsetTop - 100, behavior: 'smooth' });
-        });
-
-        const sectionsForNav = ['hero', 'genesis', 'procesy', 'diagenese', 'litologie', 'future', 'simulace', 'lokality'];
-        sectionsForNav.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            ScrollTrigger.create({
-                trigger: el, start: "top center", end: "bottom center",
-                onEnter: () => updateNav(id), onEnterBack: () => updateNav(id)
-            });
-        });
-
-        function updateNav(id) {
-            let mapping = {
-                'hero': '#hero',
-                'genesis': '#litologie',
-                'procesy': '#procesy',
-                'litologie': '#litologie',
-                'future': '#future',
-                'lokality': '#lokality'
-            };
-            const targetHref = mapping[id];
-            const activeLink = document.querySelector(`.liquid-nav a[href="${targetHref}"]`);
-            if (activeLink) {
-                navLinks.forEach(l => l.classList.remove('active'));
-                activeLink.classList.add('active');
-                moveIndicator(activeLink);
-            }
-        }
-
-        window.addEventListener('load', () => moveIndicator(document.querySelector('.liquid-nav a.active')));
-
-        const reveals = document.querySelectorAll('.reveal');
-        reveals.forEach(el => {
-            ScrollTrigger.create({ trigger: el, start: "top 85%", onEnter: () => el.classList.add('active') });
-        });
-
-        gsap.to(".progress-bar", {
-            width: "100%",
-            scrollTrigger: { scrub: 0.5, start: "top top", end: "bottom bottom" }
-        });
-
-        gsap.to(".parallax-img", {
-            y: -50, scrollTrigger: { trigger: ".parallax-img", scrub: true }
-        });
-
-        // Erosion Sim
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const rockModel = document.getElementById('rock-model');
-        const canvasContainer = document.getElementById('canvas-container');
-        let sandInterval;
-
-        function createSandParticle() {
-            const p = document.createElement('div');
-            p.className = 'sand-particle';
-            const y = 170 + (Math.random() * 150); // Focused on the neck area
-            p.style.setProperty('--y', `${y}px`);
-            const size = 4 + Math.random() * 5;
-            p.style.width = p.style.height = `${size}px`;
-            p.style.animation = `fly-sand ${0.5 + Math.random()}s linear forwards`;
-            canvasContainer.appendChild(p);
-            setTimeout(() => p.remove(), 1500);
-        }
-
-        startBtn.addEventListener('click', () => {
-            rockModel.style.width = '30px'; rockModel.style.height = '160px';
-            clearInterval(sandInterval);
-            sandInterval = setInterval(createSandParticle, 20);
-            startBtn.disabled = true; startBtn.style.opacity = '0.5';
-            setTimeout(() => { clearInterval(sandInterval); }, 5000);
-        });
-
-        resetBtn.addEventListener('click', () => {
-            clearInterval(sandInterval);
-            rockModel.style.width = '120px'; rockModel.style.height = '180px';
-            startBtn.disabled = false; startBtn.style.opacity = '1';
-            document.querySelectorAll('.sand-particle').forEach(p => p.remove());
-        });
-
-        function toggleInfo(el) {
-            const info = el.querySelector('.more-info');
-            if (info.style.display === 'none') { gsap.fromTo(info, { height: 0, opacity: 0, display: 'block' }, { height: 'auto', opacity: 1, duration: 0.5, ease: 'power2.out' }); }
-            else { gsap.to(info, { height: 0, opacity: 0, duration: 0.3, ease: 'power2.in', onComplete: () => info.style.display = 'none' }); }
-        }
-
-        // Map
-        const map = L.map('map', { scrollWheelZoom: false }).setView([40, 0], 2);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
-        const locations = [
-            { name: "Slavenské hřiby (CZ)", coords: [50.536, 16.291], desc: "Broumovsko.", img: "assets/slavenskehriby.jpg", info: "Unikátní pískovcové útvary v CHKO Broumovsko. Vznikly selektivním větráním kvádrových pískovců svrchní křídy.", age: "Svrchní křída", type: "Pískovec" },
-            { name: "Kokořínské pokličky (CZ)", coords: [50.448, 14.582], desc: "Kokořínsko.", img: "assets/kokorin.jpg", info: "Vrchní vrstva je tvořena pevným železitým pískovcem (slepencem), který chrání měkčí nohu před erozí.", age: "Křída", type: "Železitý pískovec" },
-            { name: "White Pocket (USA)", coords: [36.958, -111.903], desc: "Arizona.", img: "assets/whitepocket.jpg", info: "Fascinující oblast v poušti Arizona známá svými pokroucenými tvary a 'mozkem' připomínající strukturou skal.", age: "Jura", type: "Pískovec Navajo" },
-            { name: "Goblin Valley (USA)", coords: [38.565, -110.702], desc: "Utah.", img: "assets/goblinvalley.jpg", info: "Tisíce malých hřibovitých útvarů (hoodoos), které vznikaly erozí střídajících se vrstev pískovce a břidlice.", age: "Jura", type: "Pískovec Entrada" },
-            { name: "Bardenas Reales (ESP)", coords: [42.188, -1.488], desc: "Španělsko.", img: "assets/spain.jpg", info: "Polopouštní oblast v Navarře s výraznými hřiby, stolovými horami a kaňony modelovanými prudkými dešti a větrem.", age: "Třetihorní sedimenty", type: "Jílovec / Pískovec" },
-            { name: "Wadi Rum (JOR)", coords: [29.576, 35.421], desc: "Jordánsko.", img: "assets/wadirum.jpg", info: "Údolí vryté do pískovcových a žulových skal. Místní hřiby jsou modelovány extrémními teplotními rozdíly a pískem.", age: "Prvohory až křída", type: "Pískovec / Žula" }
-        ];
-        locations.forEach((loc, index) => {
-            const m = L.circleMarker(loc.coords, { radius: 8, fillColor: "var(--primary)", color: "#fff", weight: 2, opacity: 1, fillOpacity: 0.8 }).addTo(map);
-            m.bindPopup(`
-                <div style="color: #ffffff; width: 160px; text-align: center;">
-                    <img src="${loc.img}" style="width: 100%; border-radius: 8px; margin-bottom: 8px;">
-                    <strong style="display: block; margin-bottom: 5px;">${loc.name}</strong>
-                    <button class="btn-anim" style="color: #ffffff; border-color: var(--primary); width: 100%;" onclick="showLocationDetails(${index}, this)">Zobrazit Detail</button>
-                </div>
-            `);
-        });
-
-        // Location Detail Logic
-        function showLocationDetails(index, btnEl) {
-            const loc = locations[index];
-            const modal = document.getElementById('locationModal');
-            const modalContent = modal.querySelector('.modal-content');
-
-            // Set content first
-            document.getElementById('locTitle').innerText = loc.name;
-            document.getElementById('locDesc').innerText = loc.info;
-            document.getElementById('locImg').src = loc.img;
-            document.getElementById('locAge').innerText = "Věk: " + loc.age;
-            document.getElementById('locType').innerText = "Hornina: " + loc.type;
-
-            // Find the image in the popup for the starting position
-            const popupImg = btnEl.parentElement.querySelector('img');
-            const startRect = popupImg.getBoundingClientRect();
-
-            modal.style.display = 'flex';
-            const modalRect = modalContent.getBoundingClientRect();
-
-            // Reset items
-            gsap.set(".loc-anim-item", { opacity: 0 });
-
-            // Animation sequence
-            const tl = gsap.timeline();
-
-            // 1. Overlay fade in
-            tl.to(modal, { opacity: 1, duration: 0.3 });
-
-            // 2. Content Zoom-from-preview
-            tl.fromTo(modalContent,
-                {
-                    x: startRect.left + startRect.width / 2 - window.innerWidth / 2,
-                    y: startRect.top + startRect.height / 2 - window.innerHeight / 2,
-                    scale: startRect.width / modalRect.width,
-                    opacity: 0,
-                    borderRadius: "20px"
-                },
-                {
-                    x: 0,
-                    y: 0,
-                    scale: 1,
-                    opacity: 1,
-                    borderRadius: "40px",
-                    duration: 0.8,
-                    ease: "expo.out"
-                }, "-=0.2");
-
-            // 3. Stagger items
-            tl.to(".loc-anim-item", {
-                opacity: 1,
-                y: 0,
-                x: 0,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: "power2.out"
-            }, "-=0.4");
-        }
-
-        function closeLocModal() {
-            const modal = document.getElementById('locationModal');
-            const tl = gsap.timeline({
-                onComplete: () => {
-                    modal.style.display = 'none';
-                }
-            });
-            tl.to(".loc-anim-item", { opacity: 0, y: 20, duration: 0.3, stagger: 0.05 })
-                .to(modal, { opacity: 0, duration: 0.3 });
-        }
-
-        function openQrModal() {
-            const modal = document.getElementById('qrModal');
-            modal.style.display = 'flex';
-            gsap.to(modal, { opacity: 1, duration: 0.5 });
-        }
-
-        function closeQrModal() {
-            const modal = document.getElementById('qrModal');
-            gsap.to(modal, { opacity: 0, duration: 0.3, onComplete: () => modal.style.display = 'none' });
-        }
-
-        // GENESIS ANIMATIONS
-        const genCanvas = document.getElementById('genCanvas');
-        const gctx = genCanvas.getContext('2d');
-        let currentAnim;
-
-        function openAnimation(type) {
-            const modal = document.getElementById('animationModal');
-            modal.style.display = 'flex';
-            gsap.to(modal, { opacity: 1, duration: 0.5 });
-            genCanvas.width = genCanvas.offsetWidth; genCanvas.height = genCanvas.offsetHeight;
-            if (type === 'sediment') {
-                document.getElementById('modalTitle').innerText = '1. Usazování';
-                document.getElementById('modalDesc').innerText = 'Písek se snáší k mořskému dnu.';
-                startSedimentAnimation();
-            } else if (type === 'lithos') {
-                document.getElementById('modalTitle').innerText = '2. Ztvrdnutí';
-                document.getElementById('modalDesc').innerText = 'Tlak mění písek v kámen.';
-                startLithoAnimation();
-            } else {
-                document.getElementById('modalTitle').innerText = '3. Obroušení';
-                document.getElementById('modalDesc').innerText = 'Vítr vybrousí nohu hřibu.';
-                startErosionGenAnimation();
-            }
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('animationModal');
-            gsap.to(modal, { opacity: 0, duration: 0.3, onComplete: () => { modal.style.display = 'none'; cancelAnimationFrame(currentAnim); } });
-        }
-
-        function startSedimentAnimation() {
-            let pts = [], layers = 0;
-            const cw = genCanvas.width;
-            const ch = genCanvas.height;
-            function loop() {
-                gctx.fillStyle = '#000'; gctx.fillRect(0, 0, cw, ch);
-                // Particle source centered
-                if (pts.length < 60) pts.push({
-                    x: (cw / 2 - 120) + Math.random() * 240,
-                    y: 0,
-                    vx: (Math.random() - 0.5) * 0.5
-                });
-                pts.forEach((p, i) => {
-                    p.y += 2.5;
-                    p.x += p.vx;
-                    gctx.fillStyle = '#d4b483'; gctx.fillRect(p.x, p.y, 3, 3);
-                    // Collision with bottom layer
-                    if (p.y > ch - 20 - layers * 0.15) { pts.splice(i, 1); layers++; }
-                });
-                // Centered sediment layer
-                gctx.fillStyle = '#8b7355';
-                const layerH = 20 + layers * 0.15;
-                gctx.fillRect(cw / 2 - 150, ch - layerH, 300, layerH);
-                currentAnim = requestAnimationFrame(loop);
-            }
-            loop();
-        }
-
-        function startLithoAnimation() {
-            let f = 0;
-            function loop() {
-                f++; gctx.fillStyle = '#000'; gctx.fillRect(0, 0, genCanvas.width, genCanvas.height);
-                gctx.fillStyle = `rgba(139, 115, 85, ${0.4 + Math.sin(f * 0.05) * 0.2})`;
-                gctx.fillRect(genCanvas.width / 2 - 80, 100, 160, 160);
-                gctx.fillStyle = 'var(--primary)';
-                for (let i = 0; i < 30; i++) gctx.fillRect(genCanvas.width / 2 - 70 + (i % 6) * 25, 110 + Math.floor(i / 6) * 30 + Math.sin(f * 0.1 + i) * 5, 4, 4);
-                currentAnim = requestAnimationFrame(loop);
-            }
-            loop();
-        }
-
-        function startErosionGenAnimation() {
-            let f = 0;
-            let particles = [];
-            for (let i = 0; i < 40; i++) particles.push({ x: Math.random() * genCanvas.width, y: 190 + Math.random() * 80, s: 3 + Math.random() * 4 });
-
-            function loop() {
-                f++;
-                gctx.fillStyle = '#000';
-                gctx.fillRect(0, 0, genCanvas.width, genCanvas.height);
-
-                // Flying Sand
-                gctx.fillStyle = '#d4b483';
-                particles.forEach(p => {
-                    p.x += 8 + Math.random() * 4;
-                    if (p.x > genCanvas.width) p.x = -10;
-                    gctx.fillRect(p.x, p.y + Math.sin(f * 0.2 + p.x * 0.05) * 5, p.s, p.s);
-                });
-
-                const cx = genCanvas.width / 2;
-                // Head (Top block)
-                gctx.fillStyle = '#3d3126';
-                gctx.fillRect(cx - 90, 110, 180, 70);
-
-                // Neck (Bottom block) - narrowing
-                gctx.fillStyle = '#8b7355';
-                let w = 100 - Math.min(f * 0.15, 75);
-                gctx.fillRect(cx - w / 2, 180, w, 110);
-
-                // Ground
-                gctx.fillStyle = '#1a1a1a';
-                gctx.fillRect(0, 290, genCanvas.width, 110);
-
-                if (w > 26) {
-                    currentAnim = requestAnimationFrame(loop);
-                } else {
-                    setTimeout(() => {
-                        if (document.getElementById('animationModal').style.display !== 'none') {
-                            f = 0;
-                            currentAnim = requestAnimationFrame(loop);
-                        }
-                    }, 2000);
-                }
-            }
-            loop();
-        }
-        // AI ASSISTANT LOGIC
-        const geminiModel = "gemini-2.5-flash-lite";
-
-        async function callGemini(prompt) {
-            const apiKey = "AIzaSyB9CUoUoRddblRQVTb6jNoQXO-peznlSZ4";
-            if (!apiKey || apiKey.startsWith("YOUR_")) return "Omlouvám se, ale pro funkčnost AI Geologa je nutné v kódu doplnit platný API klíč.";
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    console.error("Gemini API Error:", data);
-                    return `Chyba API (${response.status}): ${data.error?.message || 'Neznámá chyba'}`;
-                }
-
-                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                    return data.candidates[0].content.parts[0].text;
-                } else {
-                    console.error("Neočekávaný formát odpovědi:", data);
-                    return "AI sice odpovědělo, ale v nečitelném formátu. Zkuste to prosím znovu.";
-                }
-            } catch (e) {
-                console.error("Network Error:", e);
-                return "Nepodařilo se připojit k serveru. Zkontrolujte prosím své internetové připojení nebo API klíč.";
-            }
-        }
-
-        function openAIModal() {
-            const modal = document.getElementById('aiModal');
-            modal.style.display = 'flex';
-            gsap.to(modal, { opacity: 1, duration: 0.5 });
-        }
-
-        function closeAIModal() {
-            const modal = document.getElementById('aiModal');
-            gsap.to(modal, { opacity: 0, duration: 0.3, onComplete: () => modal.style.display = 'none' });
-        }
-
-        async function sendAIShowMessage() {
-            const input = document.getElementById('aiInput');
-            const chat = document.getElementById('aiChatArea');
-            const text = input.value.trim();
-            if (!text) return;
-
-            // User message
-            const uDiv = document.createElement('div');
-            uDiv.className = 'ai-bubble user';
-            uDiv.innerText = text;
-            chat.appendChild(uDiv);
-            input.value = '';
-            chat.scrollTop = chat.scrollHeight;
-
-            // Loading state
-            const bDiv = document.createElement('div');
-            bDiv.className = 'ai-bubble bot';
-            bDiv.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-            chat.appendChild(bDiv);
-            chat.scrollTop = chat.scrollHeight;
-
-            // Gemini Call
-            const prompt = `Jsi odborný geolog vyučující studenty gymnázia. Odpověz stručně, odborně a česky na tento dotaz: ${text}`;
-            const result = await callGemini(prompt);
-            bDiv.innerText = result;
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-        // EXPLORE MODE LOGIC
-        let exploreActive = false;
-        const tooltip = document.getElementById('exploreTooltip');
-
-        function toggleExploreMode() {
-            exploreActive = !exploreActive;
-            document.body.classList.toggle('explore-active');
-            document.querySelector('.explore-toggle').classList.toggle('active');
-
-            if (exploreActive) {
-                document.addEventListener('mousemove', updateTooltip);
-                window.addEventListener('click', handleExploreClick, true);
-            } else {
-                document.removeEventListener('mousemove', updateTooltip);
-                window.removeEventListener('click', handleExploreClick, true);
-                tooltip.style.display = 'none';
-            }
-        }
-
-        function updateTooltip(e) {
-            tooltip.style.left = (e.clientX + 15) + 'px';
-            tooltip.style.top = (e.clientY + 15) + 'px';
-
-            const target = e.target;
-            // Check if the target or its parent has significant text content and is not an interactive element
-            const textContent = target.innerText || target.textContent;
-            const hasSignificantText = textContent && textContent.trim().length > 5; // At least 5 characters to avoid empty/short strings
-            const isInteractive = target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
-            const isIcon = target.classList.contains('lucide'); // Assuming lucide icons
-
-            if (hasSignificantText && !isInteractive && !isIcon) {
-                tooltip.style.display = 'block';
-                // Display the first reasonable line of text
-                tooltip.innerText = textContent.trim().split('\n')[0].substring(0, 50) + (textContent.trim().split('\n')[0].length > 50 ? '...' : '');
-            } else {
-                tooltip.style.display = 'none';
-            }
-        }
-
-        async function handleExploreClick(e) {
-            if (!exploreActive) return;
-
-            const target = e.target;
-            const textContent = target.innerText || target.textContent;
-            const topic = textContent ? textContent.trim().split('\n')[0] : ''; // Use the first line of text as topic
-
-            // Only proceed if there's a meaningful topic and it's not an interactive element
-            const hasSignificantText = topic.length > 5;
-            const isInteractive = target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
-            const isIcon = target.classList.contains('lucide');
-
-            if (hasSignificantText && !isInteractive && !isIcon) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                openAIModal();
-
-                // Set custom loading message in chat
-                const chat = document.getElementById('aiChatArea');
-                const uDiv = document.createElement('div');
-                uDiv.className = 'ai-bubble user';
-                uDiv.innerHTML = `<i data-lucide="search" style="width:14px; margin-right:5px; vertical-align:middle;"></i> Průzkum: <strong>${topic}</strong>`;
-                chat.appendChild(uDiv);
-                lucide.createIcons(); // refresh icons
-                chat.scrollTop = chat.scrollHeight;
-
-                const bDiv = document.createElement('div');
-                bDiv.className = 'ai-bubble bot';
-                bDiv.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-                chat.appendChild(bDiv);
-                chat.scrollTop = chat.scrollHeight;
-
-                const prompt = `Jsi odborný geolog. Uživatel v průzkumném módu klikl na téma: "${topic}". 
-                Vysvětli stručně (2-3 věty) tento pojem v kontextu skalních hřibů a uveď jeden praktický příklad nebo zajímavost.`;
-
-                const result = await callGemini(prompt);
-                bDiv.innerText = result;
-                chat.scrollTop = chat.scrollHeight;
-            }
-        }
-
-        // PRESENTATION ZOOM LOGIC
-        const zoomSlider = document.getElementById('zoomSlider');
-        const zoomLabel = document.getElementById('zoomLabel');
-
-        zoomSlider.addEventListener('input', (e) => {
-            const zoom = e.target.value;
-            document.documentElement.style.setProperty('--text-zoom', zoom);
-            zoomLabel.innerText = Math.round(zoom * 100) + '%';
-        });
-
-
-
-
-        // Existing close functions...
-    </script>
+    
+    <script src="script.js"></script>
 </body>
-
 </html>
